@@ -56,7 +56,6 @@ ees:
         mov ax,bx
 
 call func
-jmp printe
 
 mov bp,100h
 
@@ -74,8 +73,13 @@ mloop1:
         add bp,1ah
         es
         mov ax,[bp]
-        add ax,31
+	cs
+	mov bx,[eess]
+        add ax,bx
+        add ax,29
 call func
+
+jmp printe
 
 call vectors
 
@@ -197,7 +201,7 @@ mov bh,0
 mov bl,1
 mov dl,1
 mov dh,1
-mov cx,512
+mov cx,1536
 mov al,1
 mov ah,13h
 int 10h
