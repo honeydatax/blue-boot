@@ -18,9 +18,13 @@ mov dx,labelii
 int 240
 mov ax,cs
 mov ds,ax
-mov ah,9
-mov dx,labeliii
-int 240
+mov si,labeli
+inc si
+cs
+mov cl,[si]
+mov ch,0
+mov bx,labeliii
+call printc
 jmp loop1
 call halts
 print:
@@ -122,6 +126,17 @@ pop dx
 pop dx
 pop dx
 jmp irets10
+printc:
+printc2:
+ds
+mov dl,[bx] 
+mov ah,2
+int 240
+inc bx
+dec cx
+cmp cx,0
+jnz printc2
+ret
 halts:
 jmp halts
 area:
@@ -201,7 +216,7 @@ pop di
 pop si
 pop bp
 iret
-label db 13,10,'kernel version 0.02v',13,10,'$' ,0
+label db 13,10,'kernel version 0.03v',13,10,'$' ,0
 labelii db 13,10,"$",0
 labeli db 9,0
 labeliii db '          ',13,10,'$' ,0
