@@ -3,16 +3,54 @@ org 0x100
 ;kernel blue
 ;set vector
 	call area
-;main loop
-loop1:
+	mov ax,ees
+	mov bx,ddisk
+	clc
+	sub ax,bx
+	mov cx,ax
+	mov ax,0
+	mov ds,ax
+	mov ax,cs
+	mov es,ax
+	mov si,7c00h
+	mov di,ddisk
+call strcp
+	mov ax,cs
+	mov es,ax
+	mov ds,ax
+;--------------------------------------------------------------
+;calcalation of root directory sector this sector + sfat X tfat 		cs
+		cs
+		mov bx,[eess]
+        mov ax,9000h
+        cs
+        mov [addressld],ax
+        mov ax,0h
+        cs
+        mov [address],ax
+        mov es,ax
+        mov ax,bx
+;load root directory
+call func
+
+	mov ax,cs
+	mov es,ax
+	mov ds,ax
 	mov ax,cs
 	mov ds,ax
 	mov ah,9
 	mov dx,label
 ;write kernel message
 int 240
+;main loop
+loop1:
+	mov ax,0ffffh
+	mov sp,ax
 	mov ax,cs
+	mov ss,ax
 	mov ds,ax
+	mov es,ax
+	mov ax,cs
 	mov ah,0ah
 	mov dx,labeli
 ;input a string
@@ -23,16 +61,7 @@ int 240
 	mov dx,labelii
 ;print enter
 int 240
-	mov ax,cs
-	mov ds,ax
-	mov si,labeli
-	inc si
-	cs
-	mov cl,[si]
-	mov ch,0
-	mov bx,labeliii
-;print the string input
-call printc
+jmp exec
 jmp loop1
 	call halts
 ;--------------------------------------------------------------
@@ -228,6 +257,9 @@ vectorsi:
 	push cx
 	push ax
 crts0:
+	cmp ah,0
+jnz crts1
+jmp loop1
 crts1:
 	cmp ah,1
 jnz crts2
@@ -265,8 +297,210 @@ irets10:
 	pop si
 	pop bp
 iret
+strcp:
+strcp2:
+	ds
+	mov al,[si]
+	es
+	mov [di],al
+	inc si
+	inc di
+	dec cx
+	jnz strcp2 
+	
+ret
+;--------------------------------------------------------
+;function to load sectores and directory root to memory
+func:
+;ipush
+        push bp
+        push dx
+        push cx
+        push bx
+        push ax
+        
+        xor dx,dx
+        xor cx,cx
+        cs
+;calculation sectorer 
+        mov bx,[ees1]
+        clc
+        idiv bx
+        push ax
+        mov ax,dx
+
+        xor dx,dx
+        xor cx,cx
+        cs
+;calculation sectorer
+        mov bx,[strak]
+        clc
+        idiv bx
+        push ax
+        mov ax,dx
+        inc dx
+        mov cl,dl
+        pop ax
+        mov dh,al
+        pop ax
+        mov ch,al
+        
+        mov ax,[addressld]
+        mov bx,[address]
+        mov es,ax
+        mov al,30
+        mov ah,2
+        mov dl,0
+;int load sectores into memory
+int 13h
+;ipop        
+
+        pop ax
+        pop bx
+        pop cx
+        pop dx
+        pop bp
+        ret
+;--------------------------------------------------------
+exec:
+	mov ax,2000h
+	cs
+	mov [addressld],ax
+	mov ax,100h
+	cs
+	mov [address],ax
+	mov ax,9000h
+	mov es,ax
+	mov si,0h
+mloop:
+	cs
+	mov cl,[labeli+1]
+	mov di,labeliii
+	mov bp,si
+	mmloop:
+		es
+		mov al,[bp]
+		cs
+		mov ah,[di]
+		inc bp
+		inc di
+		cmp al,ah
+		jnz mloop10 
+		dec cl
+		jnz mmloop
+	jmp mloop1
+	mloop10:
+	add si,32
+	cmp si,300h
+jb mloop  
+;if not find com jump to main loop 
+jmp loop1
+mloop1:
+;--------------------------------------------------------
+;retrive sector number of root directory table
+    add si,1ah
+    es
+    mov ax,[si]
+	mov dx,0
+	mov cx,0
+	mov bx,4
+	clc
+	mul bx
+;add root dir + sector number of file
+	cs
+	mov bx,[eess]
+    add ax,bx
+    add ax,20
+    
+ ;load COM file into address 2000h:100h
+ push cs
+ push cs
+ pop ds
+ pop es
+call func
+ push cs
+ push cs
+ pop ds
+ pop es
+;put 2000h:100h in stack to jump to 1000h:100h
+;call printe
+;jmp loop1
+
+	mov ax,2000h
+	mov es,ax
+	mov ds,ax
+	mov ss,ax
+	mov ax,0ffffh
+	mov sp,ax
+	mov ax,0x2000
+	push ax
+	mov ax,0x100
+	push ax
+;start ax bx cx dx to enter on program
+	mov ax,0
+	mov bx,0
+	mov cx,0x8000
+	mov dx,0
+	mov si,0
+	mov di,0
+;jump to 2000h:100h
+retf
+;--------------------------------------------------------
+ret
+;--------------------------------------------------------
+
+;--------------------------------------------------------
+printe:
+	mov ax,100h
+	mov bp,ax
+	mov ax,2000h
+	mov es,ax
+	mov bh,0
+	mov bl,1
+	mov dl,1
+	mov dh,1
+	mov cx,1500
+	mov al,1
+	mov ah,13h
+int 10h
+ret
+;--------------------------------------------------------
 label db 13,10,'kernel version 0.04v',13,10,'$' ,0
 labelii db 13,10,"$",0
-labeli db 9,0
-labeliii db '          ',13,10,'$' ,0
+labeli db 9,4
+labeliii db 'auto     ',13,10,'$' ,0
 labeliiii db "  $",0
+;-----------------------------------------------------------
+;jump disk table
+addressld dw 0
+address dw 0
+ddisk:
+jmp ees
+nop
+oem             db      'MY OEM  '
+bsector         dw      200h
+scluster        db      1h 
+rsector         dw      1h
+tfat            db      2h
+rent            dw      0e0h
+tsectors        dw      0b40h
+media           db      0f0h 
+sfat            dw      9h
+strak           dw      12h
+head            dw      2h
+hidden          dd      0h
+large           dd      0h
+drive           db      0h
+flag            db      0h
+sig             db      29h
+vol             dd      0ffffffffh
+labels          db      'MY LABEL    '
+id              db      'FAT12   '
+;--------------------------------------------------------
+;calcalation of root directory sector this sector + sfat X tfat 
+eess            dw      0
+;calculation strack X HEADS
+ees1            dw      0
+nop
+ees:
+;--------------------------------------------------------
