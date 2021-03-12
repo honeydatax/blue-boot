@@ -43,6 +43,7 @@ call func
 ;write kernel message
 int 240
 ;main loop
+jmp loop10
 loop1:
 	mov ax,0ffffh
 	mov sp,ax
@@ -55,6 +56,7 @@ loop1:
 	mov dx,labeli
 ;input a string
 int 240
+loop10:
 	mov ax,cs
 	mov ds,ax
 	mov ah,9
@@ -468,7 +470,7 @@ ret
 label db 13,10,'kernel version 0.04v',13,10,'$' ,0
 labelii db 13,10,"$",0
 labeli db 9,4
-labeliii db 'auto     ',13,10,'$' ,0
+labeliii db 'AUTO     ',13,10,'$' ,0
 labeliiii db "  $",0
 ;-----------------------------------------------------------
 ;jump disk table
