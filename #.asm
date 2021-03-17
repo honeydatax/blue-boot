@@ -107,7 +107,7 @@ int 16h
 	mov ah,2
 ;print the char
 int 240
-	push cx
+	pop cx
 jmp irets2
 ;------------------------------------------------------------
 ;
