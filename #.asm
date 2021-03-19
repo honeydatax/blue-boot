@@ -330,6 +330,7 @@ vectorsi:
 	push bx
 	push cx
 	push ax
+
 crts0:
 	cmp ah,0
 jnz crts1
