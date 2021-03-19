@@ -250,6 +250,15 @@ function5:
 int 0x17
 		pop cx
 jmp irets2
+;-------------------------------------------------------------
+;function 21_7
+function7:
+	mov ah,0
+int 0x16
+	pop cx
+jmp irets2
+;-------------------------------------------------------------
+
 ;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
@@ -343,6 +352,10 @@ crts6:
 jnz crts7
 jmp function6
 crts7:
+	cmp ah,7
+jnz crts8
+jmp function7
+crts8:
 crts9:
 	cmp ah,9
 jnz crts10
