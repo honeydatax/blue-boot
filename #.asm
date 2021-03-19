@@ -285,7 +285,11 @@ crts30h:
 jnz crts31h
 jmp gver
 crts31h:
-
+crts4c:
+	cmp ah,0x4c
+jnz crts4d
+jmp loop1
+crts4d:
 irets:
 	pop ax
 irets2:
