@@ -357,6 +357,9 @@ crts7:
 jnz crts8
 jmp function7
 crts8:
+	cmp ah,8
+jnz crts9
+jmp function7
 crts9:
 	cmp ah,9
 jnz crts10
