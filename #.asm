@@ -227,6 +227,20 @@ int 240
 ;check if max char is on
 jnz printc2
 ret
+;-------------------------------------------------------------
+;function 21_6
+function6:
+	cmp dl,0xff
+jz function6_1
+	mov ah,2
+	int 0x21
+	pop cx
+jmp irets2
+function6_1:
+	mov ah,0
+	int 0x16
+pop cx
+jmp irets2
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -310,6 +324,11 @@ crts2:
 jnz crts3
 jmp printchr
 crts3:
+crts6:
+	cmp ah,6
+jnz crts7
+jmp function6
+crts7:
 crts9:
 	cmp ah,9
 jnz crts10
