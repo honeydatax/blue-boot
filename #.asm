@@ -272,6 +272,32 @@ functionb_1:
 	pop cx
 jmp irets2
 ;-------------------------------------------------------------
+;function 21_c
+functionc:
+	mov cx,32
+	mov ax,0x40
+	mov ds,ax
+	mov bx,0x1e
+	mov al,0
+functioncloop:
+		ds
+		mov [bx],al
+		inc bx
+		dec cx
+		cmp cx,0
+	jnz functioncloop
+	mov ax,cs
+	mov ds,ax	
+	mov ah,1
+int 0x16
+jz functionc_1
+		mov al,0
+	pop cx
+jmp irets2
+functionc_1:
+	pop cx
+jmp irets2
+;-------------------------------------------------------------
 ;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
@@ -386,6 +412,10 @@ crts11:
 jnz crtsc
 jmp functionb
 crtsc:
+	cmp ah,0ch
+jnz crtsd
+jmp functionc
+crtsd:
 crts30h:
 	cmp ah,030h
 jnz crts31h
