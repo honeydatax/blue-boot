@@ -241,6 +241,16 @@ function6_1:
 	int 0x16
 pop cx
 jmp irets2
+;-------------------------------------------------------------
+;function 21_5
+function5:
+	mov ah,0
+	mov al,dl
+	mov dx,0
+int 0x17
+		pop cx
+jmp irets2
+;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -324,6 +334,10 @@ crts2:
 jnz crts3
 jmp printchr
 crts3:
+crts5:
+	cmp ah,5
+jnz crts6
+jmp function5
 crts6:
 	cmp ah,6
 jnz crts7
