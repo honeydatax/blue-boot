@@ -258,7 +258,20 @@ int 0x16
 	pop cx
 jmp irets2
 ;-------------------------------------------------------------
-
+;-------------------------------------------------------------
+;function 21_b
+functionb:
+	mov ah,1
+int 0x16
+jz functionb_1
+		mov al,0
+	pop cx
+jmp irets2
+functionb_1:
+		mov al,0xff
+	pop cx
+jmp irets2
+;-------------------------------------------------------------
 ;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
@@ -369,6 +382,10 @@ crts10:
 jnz crts11
 jmp kinput
 crts11:
+	cmp ah,0bh
+jnz crtsc
+jmp functionb
+crtsc:
 crts30h:
 	cmp ah,030h
 jnz crts31h
