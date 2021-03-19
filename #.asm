@@ -2,6 +2,12 @@ org 0x100
 ;---------------------------------------------
 ;kernel blue
 ;set vector
+	mov ax,cs
+	cmp ax,0x1000
+	jz areas
+	mov ah,0
+int 0x21
+areas:
 	call area
 	mov ax,ees
 	mov bx,ddisk
@@ -52,6 +58,17 @@ loop1:
 	mov ds,ax
 	mov es,ax
 	mov ax,cs
+	mov ax,cs
+	mov es,ax
+	mov ds,ax
+	mov ax,cs
+	mov ds,ax
+	mov ah,9
+	mov dx,labelii3
+;write kernel prompt
+int 240
+	mov ax,cs
+	mov ds,ax
 	mov ah,0ah
 	mov dx,labeli
 ;input a string
@@ -231,6 +248,7 @@ vectors:
 	ds
 	mov [di],dx
 	add di,2
+;----------------------------
 ;int 21h define on vector 132
 	mov ax,0
 	mov ds,ax
@@ -244,9 +262,30 @@ vectors:
 	ds
 	mov [di],dx
 	add di,2
+;----------------------------
+;int 20h define on vector 128
+	mov ax,0
+	mov ds,ax
+	mov ax,vectors20i
+	mov dx,cs
+	mov di,128
+	vectors3:
+	ds
+	mov [di],ax
+	add di,2
+	ds
+	mov [di],dx
+	add di,2
+;---------------------------
 	mov ax,cs
 	mov ds,ax
+
 ret
+;---------------------------
+;int vector 20h
+vectors20i:
+jmp loop1
+;---------------------------
 ;int vector 21h f0h
 vectorsi:
 	push bp
@@ -476,6 +515,7 @@ labelii db 13,10,"$",0
 labeli db 9,4
 labeliii db 'AUTO     ',13,10,'$' ,0
 labeliiii db "  $",0
+labelii3 db 13,10,"BLUE>$",0
 ;-----------------------------------------------------------
 ;jump disk table
 addressld dw 0
