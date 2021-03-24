@@ -298,7 +298,58 @@ functionc_1:
 	pop cx
 jmp irets2
 ;-------------------------------------------------------------
+;function 21_25
+function25:
+	mov ah,0
+	push dx
+	mov dx,0
+	mov cx,0
+	mov bx,4
+	clc
+	mul bx
+	pop dx
+	mov cx,ds
+	mov bx,ax
+	mov ax,0
+	mov ds,ax
+	ds
+	mov [bx],dx
+	inc bx
+	inc bx
+	ds
+	mov [bx],cx 
+jmp irets
 ;----------------------------------------------------------
+;function 21_25
+function35:
+	mov ah,0
+	mov dx,0
+	mov cx,0
+	mov bx,4
+	clc
+	mul bx
+	mov bx,ax
+	mov ax,0
+	mov ds,ax
+	ds
+	mov dx,[bx]
+	inc bx
+	inc bx
+	ds
+	mov cx,[bx]
+	mov bx,cx
+	mov es,dx 
+
+	pop ax
+	pop cx
+	pop dx
+	pop dx
+	pop ds
+	pop ds
+	pop di
+	pop si
+	pop bp
+iret
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -416,11 +467,21 @@ crtsc:
 jnz crtsd
 jmp functionc
 crtsd:
+crts25:
+	cmp ah,025h
+jnz crts26h
+jmp function25
+crts26h:
 crts30h:
 	cmp ah,030h
 jnz crts31h
 jmp gver
 crts31h:
+crts35:
+	cmp ah,035h
+jnz crts36h
+jmp function35
+crts36h:
 crts4c:
 	cmp ah,0x4c
 jnz crts4d
