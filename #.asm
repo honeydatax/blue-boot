@@ -320,7 +320,7 @@ function25:
 	mov [bx],cx 
 jmp irets
 ;----------------------------------------------------------
-;function 21_25
+;function 21_35
 function35:
 	mov ah,0
 	mov dx,0
@@ -337,8 +337,8 @@ function35:
 	inc bx
 	ds
 	mov cx,[bx]
-	mov bx,cx
-	mov es,dx 
+	mov es,cx
+	mov bx,dx 
 
 	pop ax
 	pop cx
