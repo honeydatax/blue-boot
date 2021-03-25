@@ -351,6 +351,40 @@ function35:
 	pop bp
 iret
 ;----------------------------------------------------------
+;function 21_4b
+function4b:
+	mov si,dx
+	mov di,labeliii
+	mov cl,0
+function4b_1:
+	ds
+	mov al,[si]
+	cs
+	mov [di],al
+	inc si
+	inc di
+	inc cl
+	cmp al,0
+jnz function4b_1
+	mov di,labeli
+	inc di
+	dec cl
+	cs
+	mov [di],cl
+	mov ax,0ffffh
+	mov sp,ax
+	mov ax,cs
+	mov ss,ax
+	mov ds,ax
+	mov es,ax
+	mov ax,cs
+	mov ax,cs
+	mov es,ax
+	mov ds,ax
+	mov ax,cs
+	mov ds,ax
+jmp loop10
+;----------------------------------------------------------
 ;halts function
 halts:
 jmp halts
@@ -482,6 +516,10 @@ crts35:
 jnz crts36h
 jmp function35
 crts36h:
+crts4b:
+	cmp ah,0x4b
+jnz crts4c
+jmp function4b
 crts4c:
 	cmp ah,0x4c
 jnz crts4d
@@ -668,7 +706,7 @@ printe:
 int 10h
 ret
 ;--------------------------------------------------------
-label db 13,10,'kernel version 0.04v',13,10,'$' ,0
+label db 13,10,'kernel version 0.05v',13,10,'$' ,0
 labelii db 13,10,"$",0
 labeli db 9,4
 labeliii db 'AUTO     ',13,10,'$' ,0
