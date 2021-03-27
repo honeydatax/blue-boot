@@ -464,6 +464,119 @@ function2c:
 iret
 ;----------------------------------------------------------
 ;----------------------------------------------------------
+;function 21_2a
+function2a:
+	mov ah,4
+	int 0x1a
+	push cx
+	push dx
+	mov si,sp
+	;---------
+	ss
+	mov bh,[si+3]
+	ss
+	mov al,[si+3]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+3],al
+	;------------
+	;---------
+	ss
+	mov bh,[si+2]
+	ss
+	mov al,[si+2]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+2],al
+	;------------
+	ss
+	mov al,[si+3]
+	mov ah,0
+	mov cx,0
+	mov dx,0
+	mov bx,100
+	clc
+	mul bx
+	mov dx,ax
+	mov al,[si+2]
+	mov ah,0
+	clc 
+	add ax,dx
+	mov [si+2],ax
+	;---------
+	ss
+	mov bh,[si+1]
+	ss
+	mov al,[si+1]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+1],al
+	;------------
+	;---------
+	ss
+	mov bh,[si+0]
+	ss
+	mov al,[si+0]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+0],al
+	;------------
+	pop dx
+	pop cx
+	mov ax,0x2a00
+	;-------
+	pop bx
+	pop bx
+	pop bx
+	pop es
+	pop es
+	pop ds
+	pop di
+	pop si
+	pop bp
+iret
+;----------------------------------------------------------
+;----------------------------------------------------------
 ;halts function
 halts:
 jmp halts
@@ -585,6 +698,11 @@ crts25:
 jnz crts26h
 jmp function25
 crts26h:
+crts2a:
+	cmp ah,02ah
+jnz crts2bh
+jmp function2a
+crts2bh:
 crts2c:
 	cmp ah,02ch
 jnz crts2dh
