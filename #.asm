@@ -385,6 +385,85 @@ jnz function4b_1
 	mov ds,ax
 jmp loop10
 ;----------------------------------------------------------
+;function 21_2c
+function2c:
+	mov ah,2
+	int 0x1a
+	push cx
+	push dx
+	mov si,sp
+	;---------
+	ss
+	mov bh,[si+3]
+	ss
+	mov al,[si+3]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+3],al
+	;------------
+	;---------
+	ss
+	mov bh,[si+2]
+	ss
+	mov al,[si+2]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+2],al
+	;------------
+	;---------
+	ss
+	mov bh,[si+1]
+	ss
+	mov al,[si+1]
+	and al,0xf0
+	and bh,0xf
+	shr al,4
+	mov cx,0
+	mov dx,0
+	mov bl,10
+	clc 
+	mul bl
+	mov ah,0
+	clc
+	add al,bh
+	ss
+	mov [si+1],al
+	;------------
+	pop dx
+	pop cx
+	;-------
+	pop ax
+	pop bx
+	pop bx
+	pop es
+	pop es
+	pop ds
+	pop di
+	pop si
+	pop bp
+iret
+;----------------------------------------------------------
+;----------------------------------------------------------
 ;halts function
 halts:
 jmp halts
@@ -506,6 +585,11 @@ crts25:
 jnz crts26h
 jmp function25
 crts26h:
+crts2c:
+	cmp ah,02ch
+jnz crts2dh
+jmp function2c
+crts2dh:
 crts30h:
 	cmp ah,030h
 jnz crts31h
