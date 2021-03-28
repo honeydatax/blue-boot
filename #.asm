@@ -576,6 +576,89 @@ function2a:
 	pop bp
 iret
 ;----------------------------------------------------------
+;function 21_2d
+function2d:
+	push cx
+	push dx
+	mov si,sp
+	;---------------
+	ss
+	mov al,[si+3]
+	ss
+	mov dh,[si+3]
+	mov bl,10
+	mov ah,0
+	clc 
+	div bl
+	clc
+	mov dl,al
+	mov ah,0
+	mov bl,10
+	clc
+	mul bl
+	clc
+	sub dh,al
+	clc
+	shl dl,4
+	or dl,dh
+	ss
+	mov [si+3],dl
+	;------------
+	;---------------
+	ss
+	mov al,[si+2]
+	ss
+	mov dh,[si+2]
+	mov bl,10
+	mov ah,0
+	clc 
+	div bl
+	clc
+	mov dl,al
+	mov ah,0
+	mov bl,10
+	clc
+	mul bl
+	clc
+	sub dh,al
+	shl dl,4
+	or dl,dh
+	ss
+	mov [si+2],dl
+	;------------
+	;---------------
+	ss
+	mov al,[si+1]
+	ss
+	mov dh,[si+1]
+	mov bl,10
+	mov ah,0
+	clc 
+	div bl
+	clc
+	mov dl,al
+	mov ah,0
+	mov bl,10
+	clc
+	mul bl
+	clc
+	sub dh,al
+	shl dl,4
+	or dl,dh
+	ss
+	mov [si+1],dl
+	;------------
+	pop dx
+	pop cx
+	;-----------
+	mov ah,3
+	mov al,0
+	mov dl,0
+	int 0x1A
+	
+jmp irets
+;----------------------------------------------------------
+;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -708,6 +791,10 @@ crts2c:
 jnz crts2dh
 jmp function2c
 crts2dh:
+	cmp ah,02dh
+jnz crts2eh
+jmp function2d
+crts2eh:
 crts30h:
 	cmp ah,030h
 jnz crts31h
