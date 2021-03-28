@@ -9,5 +9,5 @@ add auto exec on startup to file AUTO.COM add mzload.com than loads mz .exe  nam
 
 
 bug not set yet interruption timer not set yet only in next version
-bios rom eprom dos on small eprom bios
+
 
