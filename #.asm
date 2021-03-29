@@ -792,6 +792,13 @@ mov ax,0x1900
 jmp irets2
 ;----------------------------------------------------------
 ;----------------------------------------------------------
+;function21_e:
+functione:
+mov ax,0xe01
+	pop bx
+jmp irets2
+;----------------------------------------------------------
+;----------------------------------------------------------
 ;halts function
 halts:
 jmp halts
@@ -908,6 +915,11 @@ crtsc:
 jnz crtsd
 jmp functionc
 crtsd:
+crtse:
+	cmp ah,0eh
+jnz crtsf
+jmp functione
+crtsf:
 crts19:
 	cmp ah,19h
 jnz crts1a
