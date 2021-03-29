@@ -785,7 +785,11 @@ int 0x1A
 	
 jmp irets
 ;----------------------------------------------------------
-
+;function21_19:
+function19:
+mov ax,0x1900
+	pop bx
+jmp irets2
 ;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
@@ -904,6 +908,11 @@ crtsc:
 jnz crtsd
 jmp functionc
 crtsd:
+crts19:
+	cmp ah,19h
+jnz crts1a
+jmp function19
+crts1a:
 crts25:
 	cmp ah,025h
 jnz crts26h
@@ -1126,7 +1135,7 @@ printe:
 int 10h
 ret
 ;--------------------------------------------------------
-label db 13,10,'kernel version 0.05v',13,10,'$' ,0
+label db 13,10,'kernel version 0.06v',13,10,'$' ,0
 labelii db 13,10,"$",0
 labeli db 9,4
 labeliii db 'AUTO     ',13,10,'$' ,0
