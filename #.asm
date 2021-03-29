@@ -798,6 +798,24 @@ mov ax,0xe01
 	pop bx
 jmp irets2
 ;----------------------------------------------------------
+;function21_2f:
+function2f:
+	cs
+	mov bx,[ipsDTA]
+	cs
+	mov ax,[segDTA]
+	mov es,ax
+	pop ax
+	pop cx
+	pop dx
+	pop dx
+	pop ds
+	pop ds
+	pop di
+	pop si
+	pop bp
+iret
+	
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -947,6 +965,10 @@ crts2dh:
 jnz crts2eh
 jmp function2d
 crts2eh:
+crts2fh:
+	cmp ah,02fh
+jnz crts30h
+jmp function2f
 crts30h:
 	cmp ah,030h
 jnz crts31h
@@ -1153,6 +1175,8 @@ labeli db 9,4
 labeliii db 'AUTO     ',13,10,'$' ,0
 labeliiii db "  $",0
 labelii3 db 13,10,"BLUE>$",0
+segDTA dw 0x9000
+ipsDTA dw 0x8000
 ;-----------------------------------------------------------
 ;jump disk table
 addressld dw 0
