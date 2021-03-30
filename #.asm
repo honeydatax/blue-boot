@@ -815,7 +815,17 @@ function2f:
 	pop si
 	pop bp
 iret
-	
+;----------------------------------------------------------
+;function21_1a:
+function1a:
+	mov ax,ds
+	cs
+	mov [ipsDTA],dx
+	cs
+	mov [segDTA],ax
+jmp irets
+;----------------------------------------------------------
+
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -943,6 +953,10 @@ crts19:
 jnz crts1a
 jmp function19
 crts1a:
+	cmp ah,1ah
+jnz crts1b
+jmp function1a
+crts1b:
 crts25:
 	cmp ah,025h
 jnz crts26h
