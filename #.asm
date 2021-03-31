@@ -825,7 +825,122 @@ function1a:
 	mov [segDTA],ax
 jmp irets
 ;----------------------------------------------------------
-
+;----------------------------------------------------------
+;function21_3d:
+function3d:
+	push ax
+	mov cl,0
+	mov di,labeliii
+	mov si,dx
+function3d_copy:
+	ds
+	mov al,[si]
+	cs
+	mov [di],al
+	inc si
+	inc di
+	inc cl
+	cmp al,0
+	jnz function3d_copy
+	dec cl
+	mov di,labeli+1
+	cs
+	mov [di],cl
+	mov cl,0
+	mov ax,0x8000
+	mov es,ax
+	mov bx,0
+function3d_1:
+	cmp cl,225
+	jnz function3d_2
+	pop ax
+	jmp function3d_end
+function3d_2:
+	es
+	mov al,[bx]
+	cmp al,0
+	jnz function3d_3
+	jmp function3d_file
+function3d_3:
+		clc 
+		add bx,42
+		inc cl
+		jmp function3d_1
+function3d_file:
+	mov ch,1
+	es
+	mov [bx],ch
+	pop ax
+	push cx
+	inc bx
+	es
+	mov [bx],al
+	mov ax,0
+	inc bx
+	es
+	mov [bx],ax
+	inc bx
+	inc bx
+	es
+	mov [bx],ax
+	push es
+	push bx
+	mov ax,0x9000
+	mov es,ax
+	mov si,0h
+function3d_mloop:
+	cs
+	mov cl,[labeli+1]
+	mov di,labeliii
+	mov bp,si
+	function3d_mmloop:
+		es
+		mov al,[bp]
+		cs
+		mov ah,[di]
+		inc bp
+		inc di
+		cmp al,ah
+		jnz function3d_mloop10 
+		dec cl
+		jnz function3d_mmloop
+	jmp function3d_mloop1
+	function3d_mloop10:
+	add si,32
+	cmp si,300h
+jb function3d_mloop  
+;if not find com jump to main loop 
+pop ax
+pop ax
+pop ax
+jmp function3d_end
+function3d_mloop1:
+;--------------------------------------------------------
+;retrive sector number of root directory table
+	pop di
+	pop ds
+	mov cl,32
+function3d_copy_2:
+	es
+	mov al,[si]
+	ds
+	mov [di],al
+	inc si
+	inc di
+	dec cl
+	cmp cl,0
+	jnz function3d_copy_2
+function3d_copy_end:
+	pop ax
+	mov ah,0
+	pop bx
+	stc
+jmp irets2
+function3d_end:
+	mov ax,255
+	clc
+	pop bx
+jmp irets2
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -993,6 +1108,11 @@ crts35:
 jnz crts36h
 jmp function35
 crts36h:
+crts3d:
+	cmp ah,03dh
+jnz crts3eh
+jmp function3d
+crts3eh:
 crts4b:
 	cmp ah,0x4b
 jnz crts4c
