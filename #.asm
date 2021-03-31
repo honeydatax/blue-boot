@@ -883,6 +883,8 @@ function3d_file:
 	inc bx
 	es
 	mov [bx],ax
+	inc bx
+	inc bx
 	push es
 	push bx
 	mov ax,0x9000
@@ -910,9 +912,13 @@ function3d_mloop:
 	cmp si,300h
 jb function3d_mloop  
 ;if not find com jump to main loop 
-pop ax
-pop ax
-pop ax
+	pop bx
+	pop es
+	sub bx,6
+	mov ax,0
+	es
+	mov [bx],ax 
+	pop ax
 jmp function3d_end
 function3d_mloop1:
 ;--------------------------------------------------------
