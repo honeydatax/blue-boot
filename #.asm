@@ -64,6 +64,18 @@ close_all_files:
 	dec cx
 	cmp cx,0
 jnz close_all_files
+	;open file 0 console for output
+	mov ax,0x8000
+	mov es,ax
+	mov bx,0
+	mov ax,0x101
+	es
+	mov [bx],ax
+	clc
+	add bx,42
+	es
+	mov [bx],ax
+	;reset command line
 	mov ax,0ffffh
 	mov sp,ax
 	mov ax,cs
