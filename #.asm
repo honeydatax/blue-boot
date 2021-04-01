@@ -973,6 +973,33 @@ function3d_end:
 	pop bx
 jmp irets2
 ;----------------------------------------------------------
+;function 21_40
+function40:
+	cmp bl,0
+	jz function40_1
+	jmp function40_2
+function40_1:
+	push cx
+	mov bx,dx
+function40_loop:
+	ds
+	mov dl,[bx]
+	mov ah,2
+int 0x21
+	inc bx
+	dec cx
+	cmp cx,0
+jnz function40_loop
+	pop ax
+	pop bx
+jmp irets2
+function40_2:
+	mov ax,0
+	pop bx
+jmp irets2
+;----------------------------------------------------------
+;----------------------------------------------------------
+;----------------------------------------------------------
 ;halts function
 halts:
 jmp halts
@@ -1144,6 +1171,11 @@ crts3d:
 jnz crts3eh
 jmp function3d
 crts3eh:
+crts40:
+	cmp ah,0x40
+jnz crts41
+jmp function40
+crts41:
 crts4b:
 	cmp ah,0x4b
 jnz crts4c
