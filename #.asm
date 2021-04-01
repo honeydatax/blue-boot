@@ -51,6 +51,19 @@ int 240
 ;main loop
 jmp loop10
 loop1:
+	;close all files
+	mov ax,0x8000
+	mov es,ax
+	mov cx,10710
+	mov bx,0
+	mov al,0
+close_all_files:
+	es
+	mov [bx],al
+	inc bx
+	dec cx
+	cmp cx,0
+jnz close_all_files
 	mov ax,0ffffh
 	mov sp,ax
 	mov ax,cs
