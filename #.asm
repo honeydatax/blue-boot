@@ -1070,6 +1070,76 @@ jnz function3f_loop
 	pop bx
 jmp irets2
 function3f_3:
+	cmp bl,3
+	ja function3f_8
+	jmp function3f_2
+function3f_8:
+	push cx
+	push ds
+	push dx
+	mov ax,0x8000
+	mov ds,ax
+	mov ax,42
+	mov bh,0
+	clc 
+	mul bx
+	mov bx,ax
+	ds
+	mov al,[bx]
+	cmp al,0
+jnz function3f_9
+jmp function3f_16
+function3f_9:
+	inc bx
+	ds
+	mov al,[bx]
+	cmp al,0
+jz function3f_10
+	cmp al,2
+jz function3f_10
+jmp function3f_16
+function3f_10:
+	clc
+	add bx,0x1a
+	clc
+	add bx,5
+	ds
+	mov ax,[bx]
+	push ax
+	mov bx,segDTA
+	cs
+	mov ax,[bx]
+	cs
+	mov [addressld],ax
+	mov bx,ipsDTA
+	cs
+	mov ax,[bx]
+	cs
+	mov [address],ax
+    pop ax
+	mov dx,0
+	mov cx,0
+	mov bx,4
+	clc
+	mul bx
+;add root dir + sector number of file
+	cs
+	mov bx,[eess]
+    add ax,bx
+    add ax,20
+    
+ ;load file
+ push cs
+ push cs
+ pop ds
+ pop es
+call func
+function3f_16:
+	pop dx
+	pop ds
+	pop ax
+	pop bx
+jmp irets2
 function3f_2:
 	mov ax,0
 	pop bx
