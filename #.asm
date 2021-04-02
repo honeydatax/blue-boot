@@ -1024,6 +1024,31 @@ function3f_2:
 	pop bx
 jmp irets2
 ;----------------------------------------------------------
+;function 21_3e
+function3e:
+	mov bh,0
+	mov ax,42
+	mov cx,0
+	mov dx,0
+	clc
+	mul bx
+	mov bx,ax
+	mov ax,0x8000
+	mov es,ax
+	mov cl,42
+	mov al,0
+function3e_loop:
+		es
+		mov [bx],al
+		inc bx
+		dec cl
+jnz function3e_loop
+jmp irets
+;----------------------------------------------------------
+;----------------------------------------------------------
+;----------------------------------------------------------
+;----------------------------------------------------------
+;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
 halts:
@@ -1196,6 +1221,9 @@ crts3d:
 jnz crts3eh
 jmp function3d
 crts3eh:
+	cmp ah,0x3e
+jnz crts3f
+jmp function3e
 crts3f:
 	cmp ah,0x3f
 jnz crts40
