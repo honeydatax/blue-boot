@@ -75,6 +75,14 @@ jnz close_all_files
 	add bx,42
 	es
 	mov [bx],ax
+	clc
+	add bx,42
+	es
+	mov [bx],ax
+	clc
+	add bx,42
+	es
+	mov [bx],ax
 	;reset command line
 	mov ax,0ffffh
 	mov sp,ax
@@ -977,7 +985,7 @@ jmp irets2
 function40:
 	cmp bl,0
 	jz function40_1
-	jmp function40_2
+	jmp function40_3
 function40_1:
 	push cx
 	mov bx,dx
@@ -990,6 +998,26 @@ int 0x21
 	dec cx
 	cmp cx,0
 jnz function40_loop
+	pop ax
+	pop bx
+jmp irets2
+function40_3:
+	cmp bl,2
+	jz function40_12
+	jmp function40_2
+function40_12:
+	push cx
+	mov bx,dx
+function40_loop2:
+	mov dx,0
+	ds
+	mov al,[bx]
+	mov ah,0
+int 0x17
+	inc bx
+	dec cx
+	cmp cx,0
+jnz function40_loop2
 	pop ax
 	pop bx
 jmp irets2
