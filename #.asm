@@ -986,6 +986,7 @@ function40:
 	cmp bl,0
 	jz function40_1
 	jmp function40_3
+; file n 0 output console screen
 function40_1:
 	push cx
 	mov bx,dx
@@ -1001,10 +1002,11 @@ jnz function40_loop
 	pop ax
 	pop bx
 jmp irets2
+; file n 2 output printer 1
 function40_3:
 	cmp bl,2
 	jz function40_12
-	jmp function40_2
+	jmp function40_4
 function40_12:
 	push cx
 	mov bx,dx
@@ -1018,6 +1020,27 @@ int 0x17
 	dec cx
 	cmp cx,0
 jnz function40_loop2
+	pop ax
+	pop bx
+jmp irets2
+; file n 3 com printer output
+function40_4:
+	cmp bl,3
+	jz function40_13
+	jmp function40_2
+function40_13:
+	push cx
+	mov bx,dx
+function40_loop3:
+	mov dx,0
+	ds
+	mov al,[bx]
+	mov ah,1
+int 0x14
+	inc bx
+	dec cx
+	cmp cx,0
+jnz function40_loop3
 	pop ax
 	pop bx
 jmp irets2
