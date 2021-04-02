@@ -8,6 +8,6 @@ int 21h and int F0h are ocupate int F0h is use to emulate int 21h
 add auto exec on startup to file AUTO.COM add mzload.com than loads mz .exe  name LOAD.EXE than dont have relocation relative
 
 
-bug not set yet interruption timer not set yet only in next version
+are 3 special files file 0 console output screen ,file 1 console input keyboard , file 2 printer output , 3 drivers ,files from disk are not yet implemented
 
 
