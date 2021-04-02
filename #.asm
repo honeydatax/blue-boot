@@ -998,6 +998,31 @@ function40_2:
 	pop bx
 jmp irets2
 ;----------------------------------------------------------
+;function 21_3f
+function3f:
+	cmp bl,1
+	jz function3f_1
+	jmp function3f_3
+function3f_1:
+	push cx
+	mov bx,dx
+function3f_loop:
+	mov ah,1
+int 0x21
+	ds
+	mov [bx],al
+	inc bx
+	dec cx
+	cmp cx,0
+jnz function3f_loop
+	pop ax
+	pop bx
+jmp irets2
+function3f_3:
+function3f_2:
+	mov ax,0
+	pop bx
+jmp irets2
 ;----------------------------------------------------------
 ;----------------------------------------------------------
 ;halts function
@@ -1171,6 +1196,10 @@ crts3d:
 jnz crts3eh
 jmp function3d
 crts3eh:
+crts3f:
+	cmp ah,0x3f
+jnz crts40
+jmp function3f
 crts40:
 	cmp ah,0x40
 jnz crts41
