@@ -1090,6 +1090,8 @@ function3f_8:
 jnz function3f_9
 jmp function3f_16
 function3f_9:
+	cs
+	mov [ipsDTAsel],bx
 	inc bx
 	ds
 	mov al,[bx]
@@ -1134,6 +1136,41 @@ function3f_10:
  pop ds
  pop es
 call func
+	cs
+	mov ax,0x8000
+	mov ds,ax
+	cs
+	mov si,[ipsDTAsel]
+	clc
+	add si,2
+	ds
+	mov dx,[si]
+	pop bx
+	pop es
+	pop cx
+	push dx
+	add dx,cx
+	ds
+	mov [si],dx
+	cs
+	mov ax,[segDTA]
+	mov ds,ax
+	pop di
+	clc
+	add di,0x8000
+	push cx
+function3f_loop_8:	
+	ds
+	mov al,[di]
+	es
+	mov [bx],al
+	inc bx
+	inc di
+	dec cx
+jnz function3f_loop_8
+	pop ax
+	pop bx
+jmp irets2
 function3f_16:
 	pop dx
 	pop ds
@@ -1552,6 +1589,7 @@ labeliiii db "  $",0
 labelii3 db 13,10,"BLUE>$",0
 segDTA dw 0x9000
 ipsDTA dw 0x8000
+ipsDTAsel dw 0
 ;-----------------------------------------------------------
 ;jump disk table
 addressld dw 0
