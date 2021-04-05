@@ -1203,6 +1203,39 @@ function3e_loop:
 jnz function3e_loop
 jmp irets
 ;----------------------------------------------------------
+;function 21_42
+function42:
+	push ax
+	push cx
+	push dx
+	mov bh,0
+	mov ax,42
+	mov cx,0
+	mov dx,0
+	clc
+	mul bx
+	mov bx,ax
+	mov ax,0x8000
+	mov es,ax
+	pop cx 
+	pop ax
+	pop ax
+	inc bx
+	inc bx
+	es
+	mov dx,[bx]
+	cmp al,1
+jnz function42_1
+	clc
+	add dx,cx
+	es 
+	mov [bx],dx
+jmp function42_2
+function42_1:
+	es 
+	mov [bx],cx
+function42_2:
+jmp irets
 ;----------------------------------------------------------
 ;----------------------------------------------------------
 ;----------------------------------------------------------
@@ -1391,6 +1424,11 @@ crts40:
 jnz crts41
 jmp function40
 crts41:
+crts42:
+	cmp ah,0x42
+jnz crts43
+jmp function42
+crts43:
 crts4b:
 	cmp ah,0x4b
 jnz crts4c
