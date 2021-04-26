@@ -12,3 +12,4 @@ are 4 special files file 0 console output screen ,file 1 console input keyboard 
 
 
 
+new exit key esc key exits program if it cracks program
