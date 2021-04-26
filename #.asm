@@ -48,10 +48,35 @@ call func
 	mov dx,label
 ;write kernel message
 int 240
+;------------------------------------
+	mov ax,cs
+	mov ds,ax
+	mov es,ax
+	mov ah,0x35
+	mov al,8
+int 0x21
+	push bx
+	pop dx
+	push es
+	pop ds
+	mov ah,0x25
+	mov al,0xef
+int 0x21
+	mov ax,cs
+	mov ds,ax
+	mov es,ax
+	mov dx,int8s
+	mov ah,0x25
+	mov al,8
+int 0x21
+;------------------------------------
 ;main loop
 jmp loop10
 loop1:
 	;close all files
+	mov ax,0
+	cs
+	mov [mm3s],ax
 	mov ax,0x8000
 	mov es,ax
 	mov cx,10710
@@ -113,6 +138,9 @@ loop10:
 	mov dx,labelii
 ;print enter
 int 240
+	mov ax,1
+	cs
+	mov [mm3s],ax
 jmp exec
 jmp loop1
 	call halts
@@ -1602,6 +1630,22 @@ retf
 ;--------------------------------------------------------
 ret
 ;--------------------------------------------------------
+int8s:
+	push ax
+int 0xef
+	cs
+	mov ax,[mm3s]
+	cmp ax,0
+	jz int8s2
+	in al,0x60
+	cmp al,129
+	jnz int8s2
+	mov ax,0xffff
+	mov sp,ax
+	jmp loop1
+int8s2:	
+	pop ax
+iret
 
 ;--------------------------------------------------------
 printe:
@@ -1619,6 +1663,7 @@ printe:
 int 10h
 ret
 ;--------------------------------------------------------
+mm3s dw 0
 label db 13,10,'kernel version 0.06v',13,10,'$' ,0
 labelii db 13,10,"$",0
 labeli db 9,4
