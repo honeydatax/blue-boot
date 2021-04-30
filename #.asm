@@ -53,7 +53,7 @@ int 240
 	mov ds,ax
 	mov es,ax
 	mov ah,0x35
-	mov al,8
+	mov al,9
 int 0x21
 	push bx
 	pop dx
@@ -67,7 +67,7 @@ int 0x21
 	mov es,ax
 	mov dx,int8s
 	mov ah,0x25
-	mov al,8
+	mov al,9
 int 0x21
 ;------------------------------------
 ;main loop
@@ -1530,7 +1530,7 @@ func:
         mov ax,[addressld]
         mov bx,[address]
         mov es,ax
-        mov al,30
+        mov al,100
         mov ah,2
         mov dl,0
 ;int load sectores into memory
@@ -1630,6 +1630,7 @@ retf
 ;--------------------------------------------------------
 ret
 ;--------------------------------------------------------
+;--------------------------------------------------------
 int8s:
 	push ax
 int 0xef
@@ -1637,15 +1638,35 @@ int 0xef
 	mov ax,[mm3s]
 	cmp ax,0
 	jz int8s2
-	in al,0x60
-	cmp al,129
-	jnz int8s2
-	mov ax,0xffff
-	mov sp,ax
-	jmp loop1
+	jmp ints8a
 int8s2:	
 	pop ax
 iret
+ints8a:
+	mov ah,0
+	in al,0x60
+	cmp ax,187
+	jl int8s2a3
+	cmp ax,198
+	ja int8s2a3
+	jmp ints8b
+	int8s2a3:
+	cmp ax,129
+	jz int8s2a1
+	jmp int8s2
+	int8s2a1:
+	jmp ints8c
+ret
+ints8b:
+	mov ax,0xffff
+	mov sp,ax
+	jmp loop1
+ints8c:
+	mov ax,0xffff
+	mov sp,ax
+	jmp loop1
+
+;--------------------------------------------------------
 
 ;--------------------------------------------------------
 printe:
