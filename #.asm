@@ -62,6 +62,10 @@ int 0x21
 	mov ah,0x25
 	mov al,0xef
 int 0x21
+;------------------------------------
+;main loop
+jmp loop10
+loop1:
 	mov ax,cs
 	mov ds,ax
 	mov es,ax
@@ -69,10 +73,6 @@ int 0x21
 	mov ah,0x25
 	mov al,9
 int 0x21
-;------------------------------------
-;main loop
-jmp loop10
-loop1:
 	;close all files
 	mov ax,0
 	cs
@@ -1530,7 +1530,7 @@ func:
         mov ax,[addressld]
         mov bx,[address]
         mov es,ax
-        mov al,100
+        mov al,120
         mov ah,2
         mov dl,0
 ;int load sectores into memory
@@ -1658,10 +1658,16 @@ ints8a:
 	jmp ints8c
 ret
 ints8b:
+	mov ax,0
+	cs
+	mov [mm3s],ax
 	mov ax,0xffff
 	mov sp,ax
 	jmp loop1
 ints8c:
+	mov ax,0
+	cs
+	mov [mm3s],ax
 	mov ax,0xffff
 	mov sp,ax
 	jmp loop1
